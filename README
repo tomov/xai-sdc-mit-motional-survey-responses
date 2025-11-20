@@ -1,1 +1,27 @@
-readme
+ChatGPT API Demo
+================
+
+This repository contains a minimal Python script that posts a stock prompt to the ChatGPT API and prints the response.
+
+## Setup
+
+1. Create a virtual environment (optional but recommended).
+2. Install dependencies:
+
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+3. Export your API key:
+
+   ```sh
+   export OPENAI_API_KEY="sk-your-key"
+   ```
+
+## Run
+
+```sh
+python app.py
+```
+
+Override the default prompt by setting `CHATGPT_DEMO_PROMPT` before running if you want to test other questions.
