@@ -4,6 +4,31 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+from scipy.stats import binomtest
+
+def run_binomial_tests(matrix, anchor_labels, label_prefix):
+    """
+    For each anchor (column of a 2 x N matrix), run a two-sided binomial test on the
+    two candidate counts (rows) under H0: p = 0.5 (fair coin between the two rows).
+
+    The first row is treated as "successes" and the second as "failures".
+    Results are printed to stdout.
+    """
+    for anchor_idx, anchor_label in enumerate(anchor_labels):
+        successes = matrix[0, anchor_idx]
+        failures = matrix[1, anchor_idx]
+        n = successes + failures
+
+        if n == 0:
+            p_value = np.nan
+        else:
+            result = binomtest(successes, n, p=0.5, alternative="two-sided")
+            p_value = result.pvalue
+
+        print(
+            f"{label_prefix} | anchor='{anchor_label}': "
+            f"counts=[{successes}, {failures}], n={n}, p-value={p_value:.4g}"
+        )
 
 # List of CSV files to analyze (can be extended with more files)
 csv_files = [
@@ -43,6 +68,10 @@ for csv_file in csv_files:
             for anchor_idx, response in enumerate(responses):
                 candidate_idx = int(response) - 1
                 aggregated_matrix[candidate_idx, anchor_idx] += 1
+
+    # Run binomial tests for this aggregated "All scenarios" matrix.
+    print("All scenarios:")
+    run_binomial_tests(aggregated_matrix, anchor_labels, figure_title)
     
     # Plot aggregated matrix in column 0
     ax = axes[0]
@@ -74,7 +103,10 @@ for csv_file in csv_files:
             for anchor_idx, response in enumerate(responses):
                 candidate_idx = int(response) - 1
                 confusion_matrix[candidate_idx, anchor_idx] += 1
-        
+       
+        print(f"scenario: {scenario}")
+        run_binomial_tests(confusion_matrix, anchor_labels, figure_title)
+         
         ax = axes[col_idx + 1]
         im = ax.imshow(confusion_matrix, cmap='Blues', aspect='auto')
         
