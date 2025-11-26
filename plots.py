@@ -13,7 +13,7 @@ csv_files = [
 
 # Mapping from CSV files to their proper titles
 csv_titles = {
-    'results/motional_drivers_results_FINAL.csv': 'Drivers',
+    'results/motional_drivers_results_FINAL.csv': 'Experts',
     'results/normal_people_results_FINAL.csv': 'Non-experts',
 }
 
