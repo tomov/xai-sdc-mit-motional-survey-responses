@@ -47,8 +47,8 @@ scenarios = [
 ]
 
 
-#df = parse_survey_data("data/motional_drivers.csv", skip_rows=3)
-df = parse_survey_data("data/normal_people_new.csv", skip_rows=4)
+df = parse_survey_data("data/motional_drivers.csv", skip_rows=2)
+#df = parse_survey_data("data/normal_people_new.csv", skip_rows=4)
 
 client = OpenAI()
         
@@ -91,6 +91,8 @@ for index, row in df.iterrows():
         passenger_data[scenario.name] = ' '.join(responses)
         
     results.append(passenger_data)
+
+    break
             
 
 results_df = pd.DataFrame(results)
